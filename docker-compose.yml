@@ -1,0 +1,32 @@
+version: '3.2'
+services:
+  elasticsearch:
+      image: docker.elastic.co/elasticsearch/elasticsearch:7.0.0
+      container_name: elasticsearch
+      environment:
+        - discovery.type=single-node
+      volumes:
+        - 'esdata:/usr/share/elasticsearch/data'
+      ports:
+        - "9200:9200"
+  logstash:
+      image: docker.elastic.co/logstash/logstash:7.0.0
+      volumes:
+        - ./:/logstash_dir
+      command: logstash -f /logstash_dir/logstash.conf
+      depends_on:
+        - elasticsearch
+      ports:
+        - "5959:5959"
+  kibana:
+      image: docker.elastic.co/kibana/kibana:7.0.0
+      container_name: django_elk_kibana
+      ports:
+        - "5601:5601"
+      environment:
+        - ELASTICSEARCH_URL=http://elasticsearch:9200
+      depends_on:
+        - elasticsearch
+
+volumes:
+  esdata:
