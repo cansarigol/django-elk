@@ -10,4 +10,4 @@ script:
   - coverage erase
   - tox
   
- after_success: coveralls
+after_success: coveralls
