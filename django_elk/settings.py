@@ -1,22 +1,12 @@
 import os
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "t$r#-+7mvu+7%yhzh%%vxg&)9*7mq)pttml1()=1enx%md4a(w"
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
-
-
-# Application definition
+ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -25,7 +15,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "app",
+    "sample_app",
 ]
 
 MIDDLEWARE = [
@@ -103,19 +93,14 @@ USE_TZ = True
 STATIC_URL = "/static/"
 
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'socket_handler': {
-            'class': 'logging.handlers.SocketHandler',
-            'host': 'localhost',
-            'port': 5959,
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "socket_handler": {
+            "class": "django_elk.handlers.DjangoElkHandler",
+            "host": "localhost",
+            "port": 5959,
         }
     },
-    'loggers': {
-        'django': {
-            'handlers': ['socket_handler'],
-            'level': 'ERROR',
-        },
-    }
+    "loggers": {"django.request": {"handlers": ["socket_handler"], "level": "ERROR"}},
 }
